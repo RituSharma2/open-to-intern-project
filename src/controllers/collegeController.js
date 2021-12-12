@@ -33,6 +33,17 @@ const collegeCreate = async function (req, res) {
             res.status(400).send({ status: false, message: 'logo link is required' })
             return
         }
+         // unique validation  >
+
+        let uniqueNameCheck = await collegeModel.findOne({name:requestBody.name})
+        if(uniqueNameCheck){
+        return res.status(400).send({status:false,msg:"this name already exist"})
+        }
+
+        let uniqueFullNameCheck = await collegeModel.findOne({fullName:requestBody.fullName})
+        if(uniqueFullNameCheck){
+        return res.status(400).send({status:false,msg:"this full  name already exist"})
+        }
         let collegeCreate = await collegeModel.create(requestBody)
         res.status(201).send({ status: true, data: collegeCreate })
 
