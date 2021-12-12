@@ -51,7 +51,19 @@ const internCreate = async function (req, res) {
         if (!(check1.length === 10 && check2)) {
             return res.status(400).send({ status: false, msg: 'enter valid number' })
         }*/
-
+        
+        // email unique validation
+        let emailCheck = await internModel.findOne({email:requestBody.email})
+        if(emailCheck){
+        return   res.status(400).send({status:false,msg:"this email already exist"})
+        }
+        
+        // number unique validation
+        let mobileCheck = await internModel.findOne({mobile:requestBody.mobile})
+        if(mobileCheck){
+        return  res.status(400).send({status:false,msg:"this mobile number is already exist"})
+        }
+        
         const collegeId = await collegeModel.findOne({ name: requestBody.collegeName })
         if (!collegeId) {
             return res.status(400).send({ status: false, msg: 'college not found' })
